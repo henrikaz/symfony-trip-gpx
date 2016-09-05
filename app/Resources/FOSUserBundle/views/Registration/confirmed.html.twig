@@ -3,8 +3,11 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block fos_user_content %}
-    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
-    {% if targetUrl %}
-    <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
-    {% endif %}
+    <div style="text-align:center">
+        <p class="h1">Good job {{ user.username }}! You are in! </p>
+
+        <img src="{{ asset('images/goodjob.jpg') }}" />
+
+        <p class="h4">Now you should <a href="{{ path('app_trip_new') }}">make your trip</a>. Don't wait too long.</p>
+    </div>
 {% endblock fos_user_content %}

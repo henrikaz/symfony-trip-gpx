@@ -2,16 +2,26 @@
 
 {% block body %}
 
+        {% if trips | length %}
+            <p>Select trip to see details.</p>
 
-    <div class="list-group">
-        {% for trip in trips %}
-            <a class="item list-group-item" href="#"
-               data-toggle="modal" data-target="#myModal"
-               data-gpx="{{ app.request.getSchemeAndHttpHost() ~ asset('uploads/gpx/' ~ trip.file) }}">
-                {{ trip.name }}
-            </a>
-        {% endfor %}
-    </div>
+            <div class="list-group">
+            {% for trip in trips %}
+                <a class="item list-group-item" href="#"
+                   data-toggle="modal" data-target="#myModal"
+                   data-gpx="{{ app.request.getSchemeAndHttpHost() ~ asset('uploads/gpx/' ~ trip.file) }}">
+                    {{ trip.name }}
+                    <span class="pull-right text-muted">{{ trip.datetime|date('d.m.Y H:i') }}</span>
+                </a>
+            {% endfor %}
+            </div>
+
+        {% else %}
+            <div id="no-trips">
+                <img src="{{ asset('images/no_trip.jpg') }}" />
+                <p class="h4">Hmmm.. No trips yet. Do something!</p>
+            </div>
+        {% endif %}
 
 
     <div class="modal fade" id="myModal">
@@ -31,9 +41,7 @@
                 </div>
 
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 
 
@@ -46,7 +54,6 @@
         outline: none;
     }
     a.item:before {
-        /*Using a Bootstrap glyphicon as the bullet point*/
         content: "\e080";
         font-family: 'Glyphicons Halflings';
         font-size: 9px;
@@ -91,12 +98,12 @@
                 dataType: "xml",
                 success: function(data) {
                     var parser = new GPXParser(data, map);
-                    parser.setTrackColour("#ff0000");     // Set the track line colour
-                    parser.setTrackWidth(5);          // Set the track line width
-                    parser.setMinTrackPointDelta(0.001);      // Set the minimum distance between track points
+                    parser.setTrackColour("#ff0000");
+                    parser.setTrackWidth(5);
+                    parser.setMinTrackPointDelta(0.001);
                     parser.centerAndZoom(data);
-                    parser.addTrackpointsToMap();         // Add the trackpoints
-                    parser.addWaypointsToMap();           // Add the waypoints
+                    parser.addTrackpointsToMap();
+                    parser.addWaypointsToMap();
                 }
             });
         }

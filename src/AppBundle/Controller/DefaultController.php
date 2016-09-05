@@ -18,7 +18,7 @@ class DefaultController extends Controller
         $tripRepository = $this->getDoctrine()->getRepository('AppBundle:Trip');
         $trips = $tripRepository->findByUser($this->getUser());
 
-        return $this->render('default/index.html.twig', [
+        return $this->render('trip/index.html.twig', [
             'trips' => $trips
         ]);
 
@@ -47,12 +47,15 @@ class DefaultController extends Controller
             );
 
             $trip->setFile($fileName);
-
             $trip->setUser($this->getUser());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($trip);
             $em->flush();
+
+            $request->getSession()
+                ->getFlashBag()
+                ->add('success', 'Very good! You have added your trip.');
 
             return $this->redirect($this->generateUrl('homepage'));
         }
@@ -63,25 +66,4 @@ class DefaultController extends Controller
 
     }
 
-    /**
-     * @Route("/trip/show/{tripId}", name="app_trip_show")
-     * @param $tripId
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showAction($tripId)
-    {
-        $trip = $this->getDoctrine()
-            ->getRepository('AppBundle:Trip')
-            ->find($tripId);
-
-        if (!$trip) {
-            throw $this->createNotFoundException(
-                'No trip found for id '. $trip
-            );
-        }
-
-        return $this->render('trip/show.html.twig', array(
-            'trip' => $trip,
-        ));
-    }
 }

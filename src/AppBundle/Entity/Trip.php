@@ -27,6 +27,11 @@ class Trip
     private $name;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $datetime;
+
+    /**
      * @ORM\Column(type="string")
      *
      * @Assert\NotBlank(message="Please, upload gpx file")
@@ -39,6 +44,15 @@ class Trip
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
+
+    /**
+     * Trip constructor.
+     */
+    public function __construct()
+    {
+        $this->datetime = new \DateTime();
+    }
+
 
     /**
      * @return int
@@ -103,5 +117,23 @@ class Trip
     {
         $this->file = $file;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDatetime()
+    {
+        return $this->datetime;
+    }
+
+    /**
+     * @param mixed $datetime
+     */
+    public function setDatetime($datetime)
+    {
+        $this->datetime = $datetime;
+    }
+
+
 
 }
