@@ -9,4 +9,6 @@ Installation steps:
 - php composer.phar install
 - php app/console doctrine:database:create
 - php app/console doctrine:schema:update --force
+
+
 Enjoy!
